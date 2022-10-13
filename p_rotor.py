@@ -46,6 +46,7 @@
    #####################################################################
 """
 
+
 class newrotor(object):
 
     def __init__(self, key, n_rotors=6):
@@ -80,7 +81,7 @@ class newrotor(object):
         for c in map(ord, buf):
             if do_decrypt:
                 # Apply decrypt rotors and xor in reverse order
-                for i in range(nr-1,-1,-1):
+                for i in range(nr-1, -1, -1):
                     c = pos[i] ^ rotors[i][c]
             else:
                 # Apply xor and ecrypt rotors
@@ -95,7 +96,7 @@ class newrotor(object):
             #        is lost if pos[i] == size-1 and pnew >= size.
             #        Masking with 0xff simulates this behavior.
             #
-            pnew = 0 # (pnew >= size) works as "carry bit"
+            pnew = 0  # (pnew >= size) works as "carry bit"
             for i in range(nr):
                 pnew = ((pos[i] + (pnew >= size)) & 0xff) + rotors[i][size]
                 pos[i] = pnew % size
@@ -160,7 +161,7 @@ class newrotor(object):
                     positions.append(rand(i))
                     erotor = id_rotor[:]
                     drotor = id_rotor[:]
-                    drotor[i] = erotor[i] = 1 + 2*rand(i/2) # increment
+                    drotor[i] = erotor[i] = 1 + 2*rand(i/2)  # increment
                     while i > 1:
                         r = rand(i)
                         i -= 1
@@ -176,36 +177,43 @@ class newrotor(object):
             self.positions[do_decrypt] = positions
         return rotors[2], nr, rotors[do_decrypt], positions
 
+
 def random_func(key):
     # Generate a random number generator that is "seeded" from key.
     # This algorithm is copied from Python2.3 randommodule.c.
     #
     mask = 0xffff
-    x=995
-    y=576
-    z=767
+    x = 995
+    y = 576
+    z = 767
     for c in map(ord, key):
-        x = (((x<<3 | x>>13) + c) & mask)
-        y = (((y<<3 | y>>13) ^ c) & mask)
-        z = (((z<<3 | z>>13) - c) & mask)
+        x = (((x << 3 | x >> 13) + c) & mask)
+        y = (((y << 3 | y >> 13) ^ c) & mask)
+        z = (((z << 3 | z >> 13) - c) & mask)
 
     # Emulate (unintended?) cast to short
     maxpos = mask >> 1
     mask += 1
-    if x > maxpos: x -= mask
-    if y > maxpos: y -= mask
-    if z > maxpos: z -= mask
+    if x > maxpos:
+        x -= mask
+    if y > maxpos:
+        y -= mask
+    if z > maxpos:
+        z -= mask
 
-    y |= 1 # avoid very bad seed, why not for x and z too?
+    y |= 1  # avoid very bad seed, why not for x and z too?
 
     # Oh, dear, for compatibility, we must evaluate the first seed transition
     # the hard way, later it becomes much simpler
-    x = 171 * (x % 177) - 2  * (x/177)
+    x = 171 * (x % 177) - 2 * (x/177)
     y = 172 * (y % 176) - 35 * (y/176)
     z = 170 * (z % 178) - 63 * (z/178)
-    if x < 0: x += 30269
-    if y < 0: y += 30307
-    if z < 0: z += 30323
+    if x < 0:
+        x += 30269
+    if y < 0:
+        y += 30307
+    if z < 0:
+        z += 30323
     # At least all values are > 0 by now but may be greater than expected ..
 
     def rand(n, seed=[(x, y, z)]):
@@ -224,4 +232,3 @@ def random_func(key):
         #    n = int(val*n) % n
 
     return rand
-

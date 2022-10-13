@@ -29,6 +29,7 @@
 
     from Konstantin L. Metlov <metlov@donfti.ru>
     - ported to Python 3 using the 2to3 script
+    - reformatted the sources using autopep8
 
 #====================================================
 #	Cycle - calendar for women
