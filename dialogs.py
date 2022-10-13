@@ -12,6 +12,7 @@ import pickle
 import wx.html
 import wx
 import os
+import random, string
 import warnings
 # deprecated since release 2.3
 warnings.filterwarnings("ignore",
@@ -183,7 +184,7 @@ class Ask_Passwd_Dlg(wx.Dialog):
 # ---------------------------------------------------------------------------
 def get_users():
     # Get list of users
-    magic_str = "UserName="
+    magic_str = b"UserName="
     users = []  # array of (user, file) name
     p, f_name = get_f_name()
     if os.path.exists(p):
@@ -193,7 +194,7 @@ def get_users():
             tmp = fd.read(len(magic_str))
             if tmp == magic_str:
                 tmp = fd.read(100)
-                n = tmp.find("===")  # find end string
+                n = tmp.find(b"===")  # find end string
                 if n != -1:
                     users.append((pickle.loads(tmp[:n]), f))
                 else:  # old format, user_name=file_name
@@ -240,7 +241,7 @@ class Login_Dlg(wx.Dialog):
         self.list.SetImageList(self.il, wx.IMAGE_LIST_SMALL)
         self.list.InsertColumn(0, _('Your name'))
         for k in range(len(self.users)):
-            self.list.InsertImageStringItem(k, self.users[k][0], idx1)
+            self.list.InsertItem(k, self.users[k][0], idx1)
         self.list.SetColumnWidth(0, 180)
         self.list.SetItemState(0, wx.LIST_STATE_SELECTED,
                                wx.LIST_STATE_SELECTED)
@@ -324,10 +325,13 @@ def first_login():
         return 'bad_login'
 # -------------------------------------------------------
 
+def randomword(length):
+   letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+   return ''.join(random.choice(letters) for i in range(length))
 
 def get_new_file_name():
     while True:
-        p, f = os.path.split(os.tempnam(None, "cycle"))
+        f = "cycle"+randomword(6)
         p, f_name = get_f_name(f)
         if not os.path.isfile(f_name):
             break

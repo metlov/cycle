@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: koi8-r
 # ====================================================
 #	Cycle - calendar for women
@@ -19,9 +19,6 @@ import os
 import sys
 import gettext
 import locale
-
-import wxversion
-wxversion.ensureMinimal('2.8')
 
 #from prn import *
 
@@ -83,7 +80,7 @@ class MyFrame(wx.Frame):
 
         self.cal = Cal_Year(self)
         self.OnCurrent(self)
-        wx.EVT_CLOSE(self, self.OnCloseWindow)
+        self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
 
     def OnCloseWindow(self, event):
         Save_Cycle(cycle.name, cycle.passwd, cycle.file)
@@ -96,45 +93,45 @@ class MyFrame(wx.Frame):
         tb = self.CreateToolBar(wx.TB_HORIZONTAL | wx.NO_BORDER)
         tb.SetToolBitmapSize(wx.Size(24, 24))
 
-        SetToolPath(self, tb, 10, os.path.join(
-            bitmaps_dir, 'dec.png'), _('Dec Year'))
-        wx.EVT_TOOL(self, 10, self.OnDecYear)
+        qDec=SetToolPath(self, tb, 10, os.path.join(
+                bitmaps_dir, 'dec.png'), _('Dec Year'))
+        self.Bind(wx.EVT_TOOL, self.OnDecYear, qDec)
 
-        SetToolPath(self, tb, 20, os.path.join(
-            bitmaps_dir, 'curr.png'), _('Current Year'))
-        wx.EVT_TOOL(self, 20, self.OnCurrent)
+        qCurr=SetToolPath(self, tb, 20, os.path.join(
+                bitmaps_dir, 'curr.png'), _('Current Year'))
+        self.Bind(wx.EVT_TOOL, self.OnCurrent, qCurr)
 
-        SetToolPath(self, tb, 30, os.path.join(
-            bitmaps_dir, 'inc.png'), _('Inc Year'))
-        wx.EVT_TOOL(self, 30, self.OnIncYear)
+        qInc=SetToolPath(self, tb, 30, os.path.join(
+                bitmaps_dir, 'inc.png'), _('Inc Year'))
+        self.Bind(wx.EVT_TOOL, self.OnIncYear, qInc)
 
         tb.SetToolSeparation(50)
         tb.AddSeparator()
 
-        SetToolPath(self, tb, 40, os.path.join(
-            bitmaps_dir, 'legend.png'), _('Legend'))
-        wx.EVT_TOOL(self, 40, self.Legend)
+        qLeg=SetToolPath(self, tb, 40, os.path.join(
+                bitmaps_dir, 'legend.png'), _('Legend'))
+        self.Bind(wx.EVT_TOOL, self.Legend, qLeg)
 
-        SetToolPath(self, tb, 45, os.path.join(
-            bitmaps_dir, 'export.png'), _('Export to iCal'))
-        wx.EVT_TOOL(self, 45, self.Export)
+        qExp=SetToolPath(self, tb, 45, os.path.join(
+                bitmaps_dir, 'export.png'), _('Export to iCal'))
+        self.Bind(wx.EVT_TOOL, self.Export, qExp)
 
-        SetToolPath(self, tb, 50, os.path.join(
-            bitmaps_dir, 'set.png'), _('Settings'))
-        wx.EVT_TOOL(self, 50, self.Settings)
+        qSett=SetToolPath(self, tb, 50, os.path.join(
+                bitmaps_dir, 'set.png'), _('Settings'))
+        self.Bind(wx.EVT_TOOL, self.Settings, qSett)
 
-        SetToolPath(self, tb, 55, os.path.join(
-            bitmaps_dir, 'help.png'), _('Help'))
-        wx.EVT_TOOL(self, 55, self.Info)
+        qHelp=SetToolPath(self, tb, 55, os.path.join(
+                bitmaps_dir, 'help.png'), _('Help'))
+        self.Bind(wx.EVT_TOOL, self.Info, qHelp)
 
 #	SetToolPath(self, tb, 57, os.path.join(bitmaps_dir,'help.png'), _('Print'))
 #	wx.EVT_TOOL(self, 57, self.test)
 
         tb.AddSeparator()
 
-        SetToolPath(self, tb, 60, os.path.join(
-            bitmaps_dir, 'exit.png'), _('Exit'))
-        wx.EVT_TOOL(self, 60, self.TimeToQuit)
+        qExit=SetToolPath(self, tb, 60, os.path.join(
+                bitmaps_dir, 'exit.png'), _('Exit'))
+        self.Bind(wx.EVT_TOOL, self.TimeToQuit, qExit)
 
         tb.Realize()
 
@@ -166,7 +163,7 @@ class MyFrame(wx.Frame):
     def Settings(self, event):
         dlg = Settings_Dlg(self)
         if dlg.ShowModal() == wx.ID_OK:
-            self.cal.Set_Year(wx.DateTime_Today().GetYear())
+            self.cal.Set_Year(wx.DateTime.Today().GetYear())
         dlg.Destroy()
 
     def Info(self, event):
@@ -188,14 +185,16 @@ class MyFrame(wx.Frame):
         self.cal.Dec_Year()
 
     def OnCurrent(self, event):
-        self.cal.Set_Year(wx.DateTime_Today().GetYear())
+        self.cal.Set_Year(wx.DateTime.Today().GetYear())
 
 
 # ----------------------------------------------
 def SetToolPath(self, tb, id, bmp, title):
     global dir_path
-    tb.AddSimpleTool(id, wx.Bitmap(os.path.join(dir_path, bmp), wx.BITMAP_TYPE_PNG),
-                     title, title)
+#    tb.AddSimpleTool(id, wx.Bitmap(os.path.join(dir_path, bmp), wx.BITMAP_TYPE_PNG),
+#                     title, title)
+    return tb.AddTool(id, "", wx.Bitmap(os.path.join(dir_path, bmp), wx.BITMAP_TYPE_PNG),
+                     wx.NullBitmap, wx.ITEM_NORMAL, title, title)
 
 
 class MyApp(wx.App):

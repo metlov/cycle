@@ -6,9 +6,8 @@
 # Home page: http://cycle.sourceforge.net
 # ===================================================
 
-from dialogs import Note_Dlg
 import wx
-import wx.calendar
+import wx.adv
 import calendar
 import operator
 from functools import reduce
@@ -34,21 +33,21 @@ MARK_NEXT_TABLET = 1 << 11
 # -------------------- class Month_Cal -------------------
 
 
-class Month_Cal(wx.calendar.GenericCalendarCtrl):
+class Month_Cal(wx.adv.GenericCalendarCtrl):
     def __init__(self, parent, id, dt, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=0):
 
-        style = wx.calendar.CAL_NO_MONTH_CHANGE | wx.NO_BORDER
+        style = wx.adv.CAL_NO_MONTH_CHANGE | wx.NO_BORDER
         if cycle.first_week_day == 0:
-            style = style | wx.calendar.CAL_MONDAY_FIRST
+            style = style | wx.adv.CAL_MONDAY_FIRST
         else:
-            style = style | wx.calendar.CAL_SUNDAY_FIRST
+            style = style | wx.adv.CAL_SUNDAY_FIRST
         try:
-            style = style | wx.calendar.CAL_SEQUENTIAL_MONTH_SELECTION
+            style = style | wx.adv.CAL_SEQUENTIAL_MONTH_SELECTION
         except NameError:
             pass
 
-        wx.calendar.GenericCalendarCtrl.__init__(
+        wx.adv.GenericCalendarCtrl.__init__(
             self, parent, id, dt, pos, size, style)
         self.SetBackgroundColour(wx.WHITE)
         self.SetHeaderColours(wx.BLACK, wx.WHITE)
@@ -66,12 +65,12 @@ class Month_Cal(wx.calendar.GenericCalendarCtrl):
     def OnLeftDown(self, event):
         # HitTest(Point pos) -> (result, date, weekday)
         res, d, w = self.HitTest(event.GetPosition())
-        if res == wx.calendar.CAL_HITTEST_DAY:
+        if res == wx.adv.CAL_HITTEST_DAY:
             Val.frame.SetStatusText(info(d))
 
     def OnRightDown(self, event):
         res, d, w = self.HitTest(event.GetPosition())
-        if res == wx.calendar.CAL_HITTEST_DAY:
+        if res == wx.adv.CAL_HITTEST_DAY:
             # now d contain clicked day
             self.d_click = d
             menu = wx.Menu()
@@ -158,9 +157,9 @@ class Cal_Year(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, -1)
 #	self.SetScrollbars(20, 20, 39, 40)
-        self.SetBackgroundColour(wx.NamedColour('LIGHT BLUE'))
+        self.SetBackgroundColour('LIGHT BLUE')
 
-        dt = wx.DateTime_Today()
+        dt = wx.DateTime.Today()
         self.year = dt.GetYear()
 
         self.day_of_year = []
@@ -194,7 +193,7 @@ class Cal_Year(wx.ScrolledWindow):
         for y in range(3):
             row_box = wx.BoxSizer(wx.HORIZONTAL)
             for x in range(4):
-                t = wx.DateTimeFromDMY(1, m, self.year)
+                t = wx.DateTime.FromDMY(1, m, self.year)
                 id = wx.NewId()
                 self.month.append(Month_Cal(self, id, t, ))
                 row_box.Add(self.month[m], 0, wx.ALL, 5)
@@ -212,7 +211,7 @@ class Cal_Year(wx.ScrolledWindow):
     def Draw_Year(self):
         Val.frame.SetTitle(cycle.name+" - "+str(self.year))
         for m in range(12):
-            t = wx.DateTimeFromDMY(1, m, self.year)
+            t = wx.DateTime.FromDMY(1, m, self.year)
             self.month[m].EnableMonthChange(True)
             self.month[m].SetDate(t)
             self.month[m].EnableMonthChange(False)
@@ -225,7 +224,7 @@ class Cal_Year(wx.ScrolledWindow):
         f_ul = self.month[1].GetFont()
         f_ul.SetUnderlined(True)
 
-        dt = wx.DateTime_Today()
+        dt = wx.DateTime.Today()
         if self.year == dt.GetYear():
             add_mark(dt, MARK_TODAY, self.year)
 
@@ -234,16 +233,16 @@ class Cal_Year(wx.ScrolledWindow):
         k = 1
         for m in range(12):
             sel_hide = True  # need hide selection
-            for d in range(1, wx.DateTime_GetNumberOfDaysInMonth(m, self.year)+1):
+            for d in range(1, wx.DateTime.GetNumberOfDays(m, self.year)+1):
                 can_hide = True
                 lab = cycle.mark.get(k, 0)
-                at = wx.calendar.CalendarDateAttr(wx.BLACK)
+                at = wx.adv.CalendarDateAttr(wx.BLACK)
                 at.SetBackgroundColour(wx.WHITE)
                 at.SetFont(f_norm)
 
-                dt = wx.DateTimeFromDMY(d, m, self.year)
+                dt = wx.DateTime.FromDMY(d, m, self.year)
                 if not dt.IsWorkDay():  # mark weekend
-                    at.SetTextColour(wx.NamedColour('firebrick'))
+                    at.SetTextColour('firebrick')
 
                 if lab & MARK_BEGIN:
                     at.SetBackgroundColour(cycle.colour_set['begin'])
@@ -263,8 +262,8 @@ class Cal_Year(wx.ScrolledWindow):
                     at.SetBackgroundColour(cycle.colour_set['ovule'])
 
                 if lab & MARK_TODAY:
-                    at.SetBorderColour(wx.NamedColour('NAVY'))
-                    at.SetBorder(wx.calendar.CAL_BORDER_SQUARE)
+                    at.SetBorderColour('NAVY')
+                    at.SetBorder(wx.adv.CAL_BORDER_SQUARE)
                     can_hide = False
 
                 if lab & MARK_LAST:
@@ -365,8 +364,8 @@ def calc_fert(year):
     # по прошлым циклам
     if cycle.begin == []:
         return
-    year_b = wx.DateTimeFromDMY(1, 0, year)
-    year_e = wx.DateTimeFromDMY(31, 11, year)
+    year_b = wx.DateTime.FromDMY(1, 0, year)
+    year_e = wx.DateTime.FromDMY(31, 11, year)
     for d in cycle.begin:
         i = cycle.begin.index(d)
         if i < len(cycle.begin)-1:
@@ -382,14 +381,14 @@ def calc_fert(year):
         if year_b <= ovul <= year_e:
             add_mark(ovul, MARK_OVUL, year)
 
-        start = d+wx.DateSpan_Day()
+        start = d+wx.DateSpan.Day()
         if i < len(cycle.begin)-1:
             last_cycle = (cycle.begin[i+1]-cycle.begin[i] +
                           wx.TimeSpan.Hours(1)).GetDays()
             if last_cycle > 35:
                 stop = d+wx.DateSpan.Days(35)
             else:
-                stop = cycle.begin[i+1]-wx.DateSpan_Day()
+                stop = cycle.begin[i+1]-wx.DateSpan.Day()
         else:
             stop = d+wx.DateSpan.Days(cycle.period-1)
 
@@ -401,7 +400,7 @@ def calc_fert(year):
                 add_mark(f, MARK_FERT, year)
             else:
                 add_mark(f, MARK_SAFESEX, year)
-            f = f+wx.DateSpan_Day()
+            f = f+wx.DateSpan.Day()
 
         if d in cycle.last:  # calc birthday
             birth = d+wx.DateSpan.Days(280+cycle.period-28)
@@ -442,7 +441,7 @@ def calc_fert(year):
                 add_mark(f, MARK_FERT, year)
             else:
                 add_mark(f, MARK_SAFESEX, year)
-            f = f+wx.DateSpan_Day()
+            f = f+wx.DateSpan.Day()
 
 
 def calc_tablet(year):
@@ -450,8 +449,8 @@ def calc_tablet(year):
 
     if cycle.tablet == []:
         return
-    year_b = wx.DateTimeFromDMY(1, 0, year)
-    year_e = wx.DateTimeFromDMY(31, 11, year)
+    year_b = wx.DateTime.FromDMY(1, 0, year)
+    year_e = wx.DateTime.FromDMY(31, 11, year)
     for d in cycle.tablet:
         i = cycle.tablet.index(d)
         if i < len(cycle.tablet)-1:
@@ -499,7 +498,7 @@ def reset_mark(year):
             add_mark(k, MARK_TABLET, year)
     for k in list(cycle.note.keys()):
         if str(year) == k[0:4]:
-            d = wx.DateTimeFromDMY(int(k[6:8]), int(k[4:6])-1, int(k[0:4]))
+            d = wx.DateTime.FromDMY(int(k[6:8]), int(k[4:6])-1, int(k[0:4]))
             add_mark(d, MARK_NOTE, year)
 
 
@@ -630,7 +629,7 @@ def report_year(year):
                     if i < len(data[n]):
                         day_of_month = data[n][i][k]
                         if day_of_month:
-                            d = wx.DateTimeFromDMY(day_of_month, m+n, year)
+                            d = wx.DateTime.FromDMY(day_of_month, m+n, year)
                             if is_set_mark(d, MARK_BEGIN, d.GetYear()):
                                 d_str += '<u>%2s</u> ' % day_of_month
                             else:

@@ -28,7 +28,7 @@ def Save_Cycle(name='cycle', passwd='123', file='cycle'):
     """
     objSave = []
     m = hashlib.md5()
-    m.update(passwd)
+    m.update(passwd.encode('utf-8'))
     rt = rotor.newrotor(m.digest())
     objSave.append(['period', cal_year.cycle.period])
     objSave.append(['by_average', cal_year.cycle.by_average])
@@ -47,8 +47,8 @@ def Save_Cycle(name='cycle', passwd='123', file='cycle'):
     for d in list(cal_year.cycle.colour_set.keys()):
         objSave.append(['colour', [d, cal_year.cycle.colour_set[d].Get()]])
 
-    tmp = rt.encrypt('Cycle'+pickle.dumps(objSave))
-    tmp = "UserName="+pickle.dumps(name)+"==="+tmp
+    tmp = rt.encrypt(b'Cycle'+pickle.dumps(objSave))
+    tmp = b"UserName="+pickle.dumps(name)+b"==="+tmp
     p, f_name = get_f_name(file)
 
     if not os.path.exists(p):
@@ -64,17 +64,17 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
     p, f_name = get_f_name(file)
     if os.path.isfile(f_name):
         m = hashlib.md5()
-        m.update(passwd)
+        m.update(passwd.encode('utf-8'))
         rt = rotor.newrotor(m.digest())
         f = open(f_name, "rb")
         tmp = f.read()
-        if tmp[:len("UserName=")] == "UserName=":
+        if tmp[:len(b"UserName=")] == b"UserName=":
             # new format
-            n = tmp.find("===")+len("===")
+            n = tmp.find(b"===")+len(b"===")
             tmp = tmp[n:]  # remove username
         tmp = rt.decrypt(tmp)
         f.close()
-        if tmp[0:5] != 'Cycle':
+        if tmp[0:5] != b'Cycle':
             #	    print 'Password is invalid'
             return False
         else:
@@ -92,13 +92,13 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
                 elif type == 'first_week_day':
                     cal_year.cycle.first_week_day = int(d)
                 elif type == 'begin':
-                    dt = wx.DateTimeFromDMY(d[0], d[1], d[2])
+                    dt = wx.DateTime.FromDMY(d[0], d[1], d[2])
                     cal_year.cycle.begin.append(dt)
                 elif type == 'last':
-                    dt = wx.DateTimeFromDMY(d[0], d[1], d[2])
+                    dt = wx.DateTime.FromDMY(d[0], d[1], d[2])
                     cal_year.cycle.last.append(dt)
                 elif type == 'tablet':
-                    dt = wx.DateTimeFromDMY(d[0], d[1], d[2])
+                    dt = wx.DateTime.FromDMY(d[0], d[1], d[2])
                     cal_year.cycle.tablet.append(dt)
                 elif type == 'note':
                     cal_year.cycle.note = d.copy()
@@ -127,12 +127,12 @@ def get_f_name(name=""):
 
 
 def set_color_default():
-    cal_year.cycle.colour_set = {'begin': wx.NamedColour('RED'),
-                                 'prog begin': wx.NamedColour('PINK'),
-                                 'conception': wx.NamedColour('MAGENTA'),
-                                 'safe sex': wx.NamedColour('WHEAT'),
-                                 'fertile': wx.NamedColour('GREEN YELLOW'),
-                                 'ovule': wx.NamedColour('SPRING GREEN'),
-                                 '1-st tablet': wx.NamedColour('GOLD'),
-                                 'pause': wx.NamedColour('LIGHT BLUE'),
-                                 'next 1-st tablet': wx.NamedColour('PINK')}
+    cal_year.cycle.colour_set = {'begin': wx.TheColourDatabase.Find('RED'),
+                                 'prog begin': wx.TheColourDatabase.Find('PINK'),
+                                 'conception': wx.TheColourDatabase.Find('MAGENTA'),
+                                 'safe sex': wx.TheColourDatabase.Find('WHEAT'),
+                                 'fertile': wx.TheColourDatabase.Find('GREEN YELLOW'),
+                                 'ovule': wx.TheColourDatabase.Find('SPRING GREEN'),
+                                 '1-st tablet': wx.TheColourDatabase.Find('GOLD'),
+                                 'pause': wx.TheColourDatabase.Find('LIGHT BLUE'),
+                                 'next 1-st tablet': wx.TheColourDatabase.Find('PINK')}
