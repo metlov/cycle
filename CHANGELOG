@@ -11,6 +11,7 @@
     - converted README files to Markdown
     - fix heading syntax in README.ru.md
     - readded forgotten export.png bitmap from Ana Guerrero López
+    - added gitignore file
 
     from Ana Guerrero López <ana@debian.org>:
     - Fix diaglogs
