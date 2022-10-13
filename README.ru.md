@@ -2,7 +2,7 @@
 [![de](https://img.shields.io/badge/lang-de-green.svg)](README.de.md)
 [![ru](https://img.shields.io/badge/lang-ru-yellow.svg)](README.ru.md)
 
-#ЦИКЛ - календарь для женщин
+# ЦИКЛ - календарь для женщин
 
 **Версия 0.3.2*  
 2002-2005 (c) Олег Гинц (altgo@users.sourceforge.net)  
