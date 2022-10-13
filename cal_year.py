@@ -70,7 +70,7 @@ class Month_Cal(wx.calendar.CalendarCtrl):
 	    menu = wx.Menu()
 	    menu.Append(1, d.Format('%d %B'))
 	    menu.AppendSeparator()
-	    menu.AppendCheckItem(2, _('Begin of cycle'))
+	    menu.AppendCheckItem(2, _('Beginning of cycle'))
 	    menu.Check(2,is_set_mark(d, MARK_BEGIN, d.GetYear()))
 	    menu.AppendCheckItem(5, _('1-st tablet'))
 	    menu.Check(5,is_set_mark(d, MARK_TABLET, d.GetYear()))
@@ -549,19 +549,18 @@ def info(day):
     if gestation:
 	k=(day-d2+wx.TimeSpan.Hours(1)).GetDays()+1
 	w=(k-1)/7
-	s+=" - "+str(k)+_(' day of gestation, ')+str(w)
-	if w == 1: s+=_(' week')
-	else: s+=_(' weeks')
+	s+=" - "+str(k)+_('% day of gestation, ')+str(w)
+	if w == 1: s+=_('1 week')
+	else: s+=_('% weeks')
 	s+=' + '+str(k-w*7)
-	if (k-w*7) == 1: s+=_(' day')
-	else: s+=_(' days')
+	if (k-w*7) == 1: s+=_('1 day')
+	else: s+=_('% days')
     else:
 	p=(d-d2+wx.TimeSpan.Hours(1)).GetDays()
 	k=(day-d2+wx.TimeSpan.Hours(1)).GetDays()+1
 
 	d=d-wx.DateSpan.Day()
-	s+=" - "+str(k)+_(' day of period from ')+d2.Format('%d %b')+_(' to ')+\
-	    d.Format('%d %b')+_(' length ')+str(p)+_(' days')
+    s+=" - "+_('%s day of period from %s to %s') % (str(k),d2.Format('%d %b'), d.Format('%d %b')) +' ' + _('length %s days') % (str(p))
     return s
 
 
