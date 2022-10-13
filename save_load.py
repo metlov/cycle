@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore",
                         message='.*rotor module', module=__name__)
 
 import wx
-import os, os.path , cPickle, md5
+import os, os.path , cPickle, hashlib
 import cal_year
 try:
     import rotor
@@ -23,7 +23,7 @@ def Save_Cycle(name='cycle', passwd='123', file='cycle'):
     """ Save the contents of our document to disk.
     """
     objSave=[]
-    m=md5.new()
+    m=hashlib.md5()
     m.update(passwd)
     rt=rotor.newrotor(m.digest())
     objSave.append(['period', cal_year.cycle.period])
@@ -59,7 +59,7 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
     
     p, f_name=get_f_name(file)
     if os.path.isfile(f_name):
-	m=md5.new()
+	m=hashlib.md5()
 	m.update(passwd)
 	rt=rotor.newrotor(m.digest())
 	f=open(f_name,"rb")

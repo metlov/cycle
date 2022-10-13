@@ -19,6 +19,9 @@
     - Report as ical
     - Export to ical
 
+    from  Miriam Ruiz <little_miry@yahoo.es>:
+    - Use hashlib when saving / loading
+
 #====================================================
 #	Cycle - calendar for women
 #	Distributed under GNU Public License
