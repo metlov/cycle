@@ -326,7 +326,7 @@ def ask_name(parent=None):
         "of some of your medical data and extracting some statistical\n"
         "conclusions from them. You cannot consider this program as a\n"
         "substitute for your gynecologist in any way."))
-    dlg = wx.TextEntryDialog(parent, _('Enter you name:'),_('New user'),'',
+    dlg = wx.TextEntryDialog(parent, _('Enter your name:'),_('New user'),'',
 	 style=wx.OK | wx.CANCEL)
     while dlg.ShowModal()==wx.ID_OK:
 	name=dlg.GetValue()

@@ -21,6 +21,7 @@
 
     from  Miriam Ruiz <little_miry@yahoo.es>:
     - Use hashlib when saving / loading
+    - Fix spelling
 
 #====================================================
 #	Cycle - calendar for women
