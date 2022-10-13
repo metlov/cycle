@@ -375,9 +375,9 @@ class Legend_Dlg(wx.Dialog):
 	self._add(box, _('conception'), cycle.colour_set['conception'])
 	self._add(box, _('safe sex'), cycle.colour_set['safe sex'])
 	self._add(box, _('fertile'), cycle.colour_set['fertile'])
-	self._add(box, _('ovule, birth'), cycle.colour_set['ovule'])
+	self._add(box, _('ovulation, birth'), cycle.colour_set['ovule'])
 	self._add(box, _('1-st tablet'), cycle.colour_set['1-st tablet'])
-	self._add(box, _('tablets N 22-28 or pause'), cycle.colour_set['pause'])
+	self._add(box, _('tablets no. 22-28 or pause'), cycle.colour_set['pause'])
 	self._add(box, _('next 1-st tablet'), cycle.colour_set['next 1-st tablet'])
 	
 	i=wx.NewId()
@@ -496,9 +496,9 @@ class Colours_Dlg(wx.Dialog):
 	self._add(box, _('conception'), 'conception')
 	self._add(box, _('safe sex'), 'safe sex')
 	self._add(box, _('fertile'), 'fertile')
-	self._add(box, _('ovule, birth'), 'ovule')
+	self._add(box, _('ovulation, birth'), 'ovule')
 	self._add(box, _('1-st tablet'), '1-st tablet')
-	self._add(box, _('tablets N 22-28 or pause'), 'pause')
+	self._add(box, _('tablets no. 22-28 or pause'), 'pause')
 	self._add(box, _('next 1-st tablet'), 'next 1-st tablet')
 	
 	b1=wx.BoxSizer(wx.HORIZONTAL)

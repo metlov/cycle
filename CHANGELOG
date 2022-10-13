@@ -14,6 +14,7 @@
     from Ana Guerrero López <ana@debian.org>:
     - Fix diaglogs
     - Line breaks in dialog message  (with Miriam Ruiz)
+    - Enhance dialog strings
 
 #====================================================
 #	Cycle - calendar for women
