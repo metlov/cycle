@@ -22,13 +22,13 @@ from set_dir import *
 #from prn import *
 
 import gettext
-import __builtin__
+import builtins
 lang_find=False
 if not '__WXMSW__' in wx.PlatformInfo:
     for lang_env_var in ('LANGUAGE', 'LC_ALL', 'LC_CTYPE', 'LANG'):
 	if lang_find:
 	    break
-	if os.environ.has_key(lang_env_var):
+	if lang_env_var in os.environ:
 	    env_language=os.environ[lang_env_var]
 	    for s_lang in env_language.split(':'): # if set more languages
 		os.environ[lang_env_var]=s_lang
@@ -37,9 +37,9 @@ if not '__WXMSW__' in wx.PlatformInfo:
 		    lang=[ dl[0][0:2] ]
 		    l=gettext.translation('cycle', msg_dir, lang)
 		    if wx.USE_UNICODE:
-			__builtin__.__dict__['_'] = lambda s: l.ugettext(s)
+			builtins.__dict__['_'] = lambda s: l.ugettext(s)
 		    else:
-			__builtin__.__dict__['_'] = lambda s: l.ugettext(s).encode(dl[1])
+			builtins.__dict__['_'] = lambda s: l.ugettext(s).encode(dl[1])
 		    _('try decode this string')
 		    lang_find=True
 		    break #language was found
@@ -51,16 +51,16 @@ else: #for MS Windows
         lang=[ dl[0][0:2] ]
 	l=gettext.translation('cycle', msg_dir, lang)
 	if wx.USE_UNICODE:
-	    __builtin__.__dict__['_'] = lambda s: l.ugettext(s)
+	    builtins.__dict__['_'] = lambda s: l.ugettext(s)
 	else:
-	    __builtin__.__dict__['_'] = lambda s: l.ugettext(s).encode(dl[1])
+	    builtins.__dict__['_'] = lambda s: l.ugettext(s).encode(dl[1])
 	_('try decode this string')
 	lang_find=True
     except:
         pass
 
 if not lang_find:
-    __builtin__.__dict__['_'] = lambda s: s
+    builtins.__dict__['_'] = lambda s: s
     lang=[""]
 
 
@@ -147,7 +147,7 @@ class MyFrame(wx.Frame):
             try:
                 fileobj = file(dlg.GetPath(), "w")
                 report_year_ical(self.cal.year, fileobj)
-            except (IOError, OSError), err:
+            except (IOError, OSError) as err:
                 wx.MessageDialog(
                     self, str(err), _("Unable to export"), style=wx.OK).ShowModal()
         

@@ -27,6 +27,9 @@
     - Update for wxPython 3.0
     - Fix initial size of main window
 
+    from Konstantin L. Metlov <metlov@donfti.ru>
+    - ported to Python 3 using the 2to3 script
+
 #====================================================
 #	Cycle - calendar for women
 #	Distributed under GNU Public License

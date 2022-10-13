@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore",
 import os
 import wx
 import wx.html
-import cPickle
+import pickle
 from cal_year import cycle , Val
 from save_load import Load_Cycle, get_f_name, set_color_default
 from set_dir import *
@@ -188,8 +188,8 @@ def get_users():
             if tmp == magic_str:
                 tmp=fd.read(100)
                 n=tmp.find("===") #find end string
-                if n <> -1:
-                    users.append((cPickle.loads(tmp[:n]), f))
+                if n != -1:
+                    users.append((pickle.loads(tmp[:n]), f))
                 else: # old format, user_name=file_name
                     users.append((f,f))
         #if not users:
@@ -484,7 +484,7 @@ class Colours_Dlg(wx.Dialog):
 	wx.Dialog.__init__(self,parent,-1, _('Colours settings'))
 
 	self.col_set = cycle.colour_set.copy()
-	self.col_id = cycle.colour_set.keys()
+	self.col_id = list(cycle.colour_set.keys())
 	self.data = wx.ColourData()
 	self.data.SetChooseFull(True)
 	self.buttons = {}

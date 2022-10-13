@@ -10,6 +10,7 @@ import wx
 import wx.calendar
 import calendar
 import operator
+from functools import reduce
 
 class Val:
     pass
@@ -349,7 +350,7 @@ def min_max(i):
 def calc_fert(year):
     """Рассчитывает фертильные периоды для year"""
 
-    for k in cycle.mark.keys():
+    for k in list(cycle.mark.keys()):
 	cycle.mark[k]=cycle.mark[k] & ~MARK_FERT &\
 	~MARK_OVUL & ~MARK_PROG & ~MARK_SAFESEX & ~MARK_BIRTH &\
 	~MARK_T22_28 & ~MARK_NEXT_TABLET
@@ -406,7 +407,7 @@ def calc_fert(year):
     cycle.prog_begin=[]
     d=d+wx.DateSpan.Days( cycle.period )
     while d.GetYear()<=year:
-	if cycle.tablet<>[] and cycle.tablet[-1]<=d and \
+	if cycle.tablet!=[] and cycle.tablet[-1]<=d and \
 	    cycle.begin[-1]<=cycle.tablet[-1]: return
 	if d.GetYear()==year: 
 	    #	    cycle.prog_begin.append(d)
@@ -484,7 +485,7 @@ def reset_mark(year):
     for k in cycle.tablet:
 	if k.GetYear()==year:
 	    add_mark(k, MARK_TABLET, year)
-    for k in cycle.note.keys():
+    for k in list(cycle.note.keys()):
 	if str(year)==k[0:4]:
 	    d=wx.DateTimeFromDMY(int(k[6:8]), int(k[4:6])-1, int(k[0:4]))
 	    add_mark(d, MARK_NOTE, year)
@@ -494,7 +495,7 @@ def info(day):
     """Возвращает строку информации по переданной дате."""
 
     s=day.Format('%d %B')
-    if cycle.tablet<>[]:
+    if cycle.tablet!=[]:
 	for d in cycle.tablet:
 	    if day.IsBetween(d, d+wx.DateSpan.Days(28)):
 		t=(day-d+wx.TimeSpan.Hours(1)).GetDays()+1
@@ -524,7 +525,7 @@ def info(day):
 	else:
 	    #ищем в будущих периодах
 	    while d<=day:
-		if cycle.tablet<>[] and cycle.tablet[-1]<=d and \
+		if cycle.tablet!=[] and cycle.tablet[-1]<=d and \
 		    cycle.begin[-1]<=cycle.tablet[-1]: return s
 		d=d+wx.DateSpan.Days(cycle.period)
 	    find=2
@@ -568,17 +569,17 @@ def get_note(date):
 
 def remove_note(date):
     d=date.Format('%Y%m%d')
-    if cycle.note.has_key(d):
+    if d in cycle.note:
 	del cycle.note[d]
 
 #-------------------- Report --------------------
 def report_year(year):
     if cycle.first_week_day == 0:
 	calendar.setfirstweekday(calendar.MONDAY)
-	days = range(1,7) + [0]
+	days = list(range(1,7)) + [0]
     else:
 	calendar.setfirstweekday(calendar.SUNDAY)
-	days = range(7)
+	days = list(range(7))
     #sp=' '
     s='<html><body><H3 align=center>%s</H3><pre>' % year
     dn = ''
@@ -620,7 +621,7 @@ def report_year(year):
     
 
     s+='</pre></body></html>'
-    print s
+    print(s)
     return s
 
 def report_year_ical(year, fileobj):
@@ -656,7 +657,7 @@ def report_year_ical(year, fileobj):
          "PRODID:-//Cycle//NONSGML Cycle//EN",
          "VERSION:2.0"]
 
-    days = cycle.mark.items()
+    days = list(cycle.mark.items())
     days.sort()
     for day, marks in days:
         if get_string(marks):
@@ -667,7 +668,7 @@ def report_year_ical(year, fileobj):
 
     s.append("END:VCALENDAR")
 
-    print >>fileobj, "\n".join(s)
+    print("\n".join(s), file=fileobj)
 
 #-------------------- Add import --------------------
 from dialogs import Note_Dlg 

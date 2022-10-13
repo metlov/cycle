@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore",
                         message='.*rotor module', module=__name__)
 
 import wx
-import os, os.path , cPickle, hashlib
+import os, os.path , pickle, hashlib
 import cal_year
 try:
     import rotor
@@ -40,15 +40,15 @@ def Save_Cycle(name='cycle', passwd='123', file='cycle'):
     for d in cal_year.cycle.tablet:
 	objSave.append(['tablet',[d.GetDay(), d.GetMonth(), d.GetYear()]])
 
-    for d in cal_year.cycle.colour_set.keys():
+    for d in list(cal_year.cycle.colour_set.keys()):
 	objSave.append(['colour', [d, cal_year.cycle.colour_set[d].Get()] ])
 
-    tmp=rt.encrypt( 'Cycle'+cPickle.dumps(objSave) )
-    tmp="UserName="+cPickle.dumps(name)+"==="+tmp
+    tmp=rt.encrypt( 'Cycle'+pickle.dumps(objSave) )
+    tmp="UserName="+pickle.dumps(name)+"==="+tmp
     p, f_name=get_f_name(file)
 
     if not os.path.exists(p):
-	os.mkdir(p,0700)
+	os.mkdir(p,0o700)
     f=open(f_name,"wb")
     f.write(tmp)
     f.close()
@@ -75,7 +75,7 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
 	    return False
 	else:
 	    tmp=tmp[5:] #remove control word 'Cycle'
-	    objLoad=cPickle.loads(tmp)
+	    objLoad=pickle.loads(tmp)
 	    set_color_default()
 	    for type, d in objLoad:
 #		print "Load: ", type, d
@@ -100,7 +100,7 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
 		    cal_year.cycle.note=d.copy()
 		elif type=='colour': # d=['item', (r,g,b)]
 		    c = wx.Colour(d[1][0], d[1][1], d[1][2])
-		    if cal_year.cycle.colour_set.has_key(d[0]):
+		    if d[0] in cal_year.cycle.colour_set:
 			cal_year.cycle.colour_set[d[0]] = c
 		    else:
 			cal_yaar.cycle.colour_set.update({d[0]:c})

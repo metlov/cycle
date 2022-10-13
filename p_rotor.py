@@ -80,11 +80,11 @@ class newrotor(object):
         for c in map(ord, buf):
             if do_decrypt:
                 # Apply decrypt rotors and xor in reverse order
-                for i in xrange(nr-1,-1,-1):
+                for i in range(nr-1,-1,-1):
                     c = pos[i] ^ rotors[i][c]
             else:
                 # Apply xor and ecrypt rotors
-                for i in xrange(nr):
+                for i in range(nr):
                     c = rotors[i][c ^ pos[i]]
             append(c)
 
@@ -96,7 +96,7 @@ class newrotor(object):
             #        Masking with 0xff simulates this behavior.
             #
             pnew = 0 # (pnew >= size) works as "carry bit"
-            for i in xrange(nr):
+            for i in range(nr):
                 pnew = ((pos[i] + (pnew >= size)) & 0xff) + rotors[i][size]
                 pos[i] = pnew % size
 
@@ -146,7 +146,7 @@ class newrotor(object):
                 # Generate identity permutation for 8-bit bytes plus an
                 # (unused) increment value
                 self.size = size = 256
-                id_rotor = range(size+1)
+                id_rotor = list(range(size+1))
 
                 # Generate nr "random" initial positions and "random"
                 # en/decrypt rotors from id_rotor.
@@ -155,7 +155,7 @@ class newrotor(object):
                 E = []
                 D = []
                 positions = []
-                for i in xrange(nr):
+                for i in range(nr):
                     i = size
                     positions.append(rand(i))
                     erotor = id_rotor[:]
