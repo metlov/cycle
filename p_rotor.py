@@ -78,7 +78,7 @@ class newrotor(object):
         size, nr, rotors, pos = self.get_rotors(do_decrypt)
         outbuf = []
         append = outbuf.append
-        for c in map(ord, buf):
+        for c in buf:
             if do_decrypt:
                 # Apply decrypt rotors and xor in reverse order
                 for i in range(nr-1, -1, -1):
@@ -101,7 +101,7 @@ class newrotor(object):
                 pnew = ((pos[i] + (pnew >= size)) & 0xff) + rotors[i][size]
                 pos[i] = pnew % size
 
-        return ''.join(map(chr, outbuf))
+        return bytes(outbuf)
 
     def get_rotors(self, do_decrypt):
         # Return a tuple (size, nr, rotors, positions) where
@@ -161,7 +161,7 @@ class newrotor(object):
                     positions.append(rand(i))
                     erotor = id_rotor[:]
                     drotor = id_rotor[:]
-                    drotor[i] = erotor[i] = 1 + 2*rand(i/2)  # increment
+                    drotor[i] = erotor[i] = 1 + 2*rand(i//2)  # increment
                     while i > 1:
                         r = rand(i)
                         i -= 1
@@ -186,7 +186,7 @@ def random_func(key):
     x = 995
     y = 576
     z = 767
-    for c in map(ord, key):
+    for c in key:
         x = (((x << 3 | x >> 13) + c) & mask)
         y = (((y << 3 | y >> 13) ^ c) & mask)
         z = (((z << 3 | z >> 13) - c) & mask)
@@ -205,9 +205,9 @@ def random_func(key):
 
     # Oh, dear, for compatibility, we must evaluate the first seed transition
     # the hard way, later it becomes much simpler
-    x = 171 * (x % 177) - 2 * (x/177)
-    y = 172 * (y % 176) - 35 * (y/176)
-    z = 170 * (z % 178) - 63 * (z/178)
+    x = 171 * (x % 177) - 2 * (x//177)
+    y = 172 * (y % 176) - 35 * (y//176)
+    z = 170 * (z % 178) - 63 * (z//178)
     if x < 0:
         x += 30269
     if y < 0:

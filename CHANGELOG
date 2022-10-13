@@ -31,6 +31,7 @@
     - ported to Python 3 using the 2to3 script
     - reformatted the sources using autopep8
     - ported to wxGTK 4
+    - fixed the encryption (to stay compatible with Python 2 version)
 
 #====================================================
 #	Cycle - calendar for women
