@@ -28,11 +28,11 @@ MARK_T22_28 = 1<<10 #tablets 22-28 or pause 7 days
 MARK_NEXT_TABLET = 1<<11 
 
 #-------------------- class Month_Cal -------------------
-class Month_Cal(wx.calendar.CalendarCtrl):
+class Month_Cal(wx.calendar.GenericCalendarCtrl):
     def __init__(self, parent, id, dt, pos=wx.DefaultPosition,
 		size=wx.DefaultSize, style=0 ):
 		
-	style = wx.calendar.CAL_NO_YEAR_CHANGE | wx.calendar.CAL_NO_MONTH_CHANGE | wx.NO_BORDER
+	style = wx.calendar.CAL_NO_MONTH_CHANGE | wx.NO_BORDER
 	if cycle.first_week_day==0:
 	    style = style | wx.calendar.CAL_MONDAY_FIRST
 	else:
@@ -42,7 +42,7 @@ class Month_Cal(wx.calendar.CalendarCtrl):
 	except NameError:
 	    pass
 		    
-	wx.calendar.CalendarCtrl.__init__(self, parent, id, dt, pos, size, style)
+	wx.calendar.GenericCalendarCtrl.__init__(self, parent, id, dt, pos, size, style)
 	self.SetBackgroundColour(wx.WHITE)
 	self.SetHeaderColours(wx.BLACK,wx.WHITE)
 	if '__WXMSW__' in wx.PlatformInfo:
@@ -139,8 +139,8 @@ class Month_Cal(wx.calendar.CalendarCtrl):
 
     def OnKey(self, event):
 	k=event.GetKeyCode()
-	if k==WXK_LEFT or k==WXK_RIGHT or \
-	   k==WXK_UP or k==WXK_DOWN:
+	if k==wx.WXK_LEFT or k==wx.WXK_RIGHT or \
+	   k==wx.WXK_UP or k==wx.WXK_DOWN:
 	    pass
 	else:
 	    event.Skip()
@@ -208,10 +208,8 @@ class Cal_Year(wx.ScrolledWindow):
 	Val.frame.SetTitle(cycle.name+" - "+str(self.year))
 	for m in range(12):
 	    t=wx.DateTimeFromDMY(1, m, self.year)
-	    self.month[m].EnableYearChange(True)
 	    self.month[m].EnableMonthChange(True)
 	    self.month[m].SetDate(t)
-	    self.month[m].EnableYearChange(False)
 	    self.month[m].EnableMonthChange(False)
 	    self.month[m].Refresh()
 
@@ -234,15 +232,8 @@ class Cal_Year(wx.ScrolledWindow):
 	    for d in range(1,wx.DateTime_GetNumberOfDaysInMonth(m, self.year)+1):
 		can_hide=True
 		lab=cycle.mark.get(k,0)
-		at=self.month[m].GetAttr(d)
-		if at is None :
-		    at=wx.calendar.CalendarDateAttr(wx.BLACK)
-		    self.month[m].SetAttr(d,at)
-		
-		# reset attributes
-		at.SetBorder(wx.calendar.CAL_BORDER_NONE)
+ 		at=wx.calendar.CalendarDateAttr(wx.BLACK)
 		at.SetBackgroundColour(wx.WHITE)
-		at.SetTextColour(wx.BLACK)
 		at.SetFont(f_norm)
 		
 		dt=wx.DateTimeFromDMY(d, m, self.year)
@@ -296,6 +287,8 @@ class Cal_Year(wx.ScrolledWindow):
 		    self.month[m].SetDate(dt)
 		    self.month[m].SetHighlightColours(at.GetTextColour(),
 				at.GetBackgroundColour())
+
+		self.month[m].SetAttr(d,at)
 
 		k+=1
 

@@ -23,6 +23,9 @@
     - Use hashlib when saving / loading
     - Fix spelling
 
+    from Olly Betts <olly@survex.com> (as per https://bugs.debian.org/758955)
+    - Update for wxPython 3.0
+
 #====================================================
 #	Cycle - calendar for women
 #	Distributed under GNU Public License

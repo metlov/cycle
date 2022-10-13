@@ -10,7 +10,7 @@ import os, sys, gettext
 import locale
 
 import wxversion 
-wxversion.ensureMinimal('2.5.3')
+wxversion.ensureMinimal('2.8')
 import wx
 import wx.html
 import wx.lib.colourdb
@@ -69,7 +69,6 @@ class MyFrame(wx.Frame):
 	wx.Frame.__init__(self, parent, ID, title,
 		       wx.DefaultPosition, wx.Size(800, 600))
 
-	wx.Image_AddHandler(wx.PNGHandler())
 #	self.printer = wx.HtmlEasyPrinting()
 	icon = wx.Icon(os.path.join(icons_dir,'mini/cycle.xpm'), wx.BITMAP_TYPE_XPM)
 	self.SetIcon(icon)
@@ -142,7 +141,7 @@ class MyFrame(wx.Frame):
 
     def Export(self, event):
         dlg = wx.FileDialog(self, _("Export to iCal"),
-                            style=wx.SAVE)
+                            style=wx.FD_SAVE)
 
         if dlg.ShowModal() == wx.ID_OK:
             try:
