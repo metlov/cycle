@@ -630,6 +630,52 @@ def report_year(year):
     print s
     return s
 
+def report_year_ical(year, fileobj):
+    import socket
+    hostname = socket.gethostname()
+
+    def get_string(mark):
+        if mark & MARK_LAST: return _("Conception")
+        elif mark & MARK_BEGIN: return _("Beginning of cycle")
+        elif mark & MARK_PROG: return _("Probable beginning of cycle")
+        elif mark & MARK_TABLET: return _("1-st tablet")
+        elif mark & MARK_OVUL: return _("Ovulation")
+        elif mark & MARK_BIRTH: return _("Birth")
+        else: return ""
+
+    def make_event(description, mark, date):
+        date2 = date + wx.TimeSpan.Days(1)
+        datestr = "%04d%02d%02d" % (
+            date.GetYear(), date.GetMonth() + 1, date.GetDay())
+        datestr2 = "%04d%02d%02d" % (
+            date2.GetYear(), date2.GetMonth() + 1, date2.GetDay())
+        uid = "UID:cycle-%d-%sZ@%s" % (mark, datestr, hostname)
+        return ["BEGIN:VEVENT", uid,
+                "DTSTART;VALUE=DATE:" + datestr,
+                "DTEND;VALUE=DATE:" + datestr2,
+                "SUMMARY:" + description,
+                "DESCRIPTION:" + description,
+                "CLASS:PUBLIC",
+                "END:VEVENT"]
+
+    s = ["BEGIN:VCALENDAR",
+         "CALSCALE:GREGORIAN",
+         "PRODID:-//Cycle//NONSGML Cycle//EN",
+         "VERSION:2.0"]
+
+    days = cycle.mark.items()
+    days.sort()
+    for day, marks in days:
+        if get_string(marks):
+            d = wx.DateTime()
+            d.SetYear(year)
+            d.SetToYearDay(day)
+            s.extend(make_event(get_string(marks), marks, d))
+
+    s.append("END:VCALENDAR")
+
+    print >>fileobj, "\n".join(s)
+
 #-------------------- Add import --------------------
 from dialogs import Note_Dlg 
    
