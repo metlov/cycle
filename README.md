@@ -4,7 +4,7 @@
 
 # CYCLE - menstrual cycle tracker for women
 
-**Version 0.3.2**  
+**13.10.2022 Version 0.3.2**  
 2002-2005 (c) Oleg Gints (altgo@users.sourceforge.net)  
 2002-2005 (c) "CONERO lab", http://conero.lrn.ru  
 2022 (c) Konstantin L. Metlov (metlov@donfti.ru , metlov@fti.dn.ua)  
