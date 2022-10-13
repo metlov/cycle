@@ -181,20 +181,20 @@ def get_users():
     users=[] #array of (user, file) name
     p, f_name=get_f_name()
     if os.path.exists(p):
-	files=os.listdir(p)
-    for f in files:
-	fd=open(os.path.join(p, f),"rb")
-	tmp=fd.read(len(magic_str))
-	if tmp == magic_str:
-	    tmp=fd.read(100)
-	    n=tmp.find("===") #find end string
-	    if n <> -1:
-		users.append((cPickle.loads(tmp[:n]), f))
-	else: # old format, user_name=file_name
-	    users.append((f,f))
-#    if not users:
-#	users=[(_('empty'),"empty")]
-    users.sort()
+        files=os.listdir(p)
+        for f in files:
+            fd=open(os.path.join(p, f),"rb")
+            tmp=fd.read(len(magic_str))
+            if tmp == magic_str:
+                tmp=fd.read(100)
+                n=tmp.find("===") #find end string
+                if n <> -1:
+                    users.append((cPickle.loads(tmp[:n]), f))
+                else: # old format, user_name=file_name
+                    users.append((f,f))
+        #if not users:
+        #users=[(_('empty'),"empty")]
+        users.sort()
     return users
 
 #---------------------------------------------------------------------------

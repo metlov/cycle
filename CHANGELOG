@@ -11,6 +11,10 @@
     - converted README files to Markdown
     - fix heading syntax in README.ru.md
 
+    from Ana Guerrero López <ana@debian.org>:
+    - Fix diaglogs
+
+
 #====================================================
 #	Cycle - calendar for women
 #	Distributed under GNU Public License
