@@ -320,11 +320,11 @@ def get_new_file_name():
 def ask_name(parent=None):
     # nobody, it is first login
     wx.MessageBox(
-	_("This program is not a reliable contraceptive method. "
-        "Neither does it help to prevent sexually transmitted diseases "
-        "like HIV/AIDS.\n\nIt is just an electronic means of keeping track "
-        "of some of your medical data and extracting some statistical "
-        "conclusions from them. You cannot consider this program as a "
+        _("This program is not a reliable contraceptive method.\n"
+        "Neither does it help to prevent sexually transmitted diseases\n"
+        "like HIV/AIDS.\n\nIt is just an electronic means of keeping track\n"
+        "of some of your medical data and extracting some statistical\n"
+        "conclusions from them. You cannot consider this program as a\n"
         "substitute for your gynecologist in any way."))
     dlg = wx.TextEntryDialog(parent, _('Enter you name:'),_('New user'),'',
 	 style=wx.OK | wx.CANCEL)
