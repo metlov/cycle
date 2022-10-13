@@ -201,7 +201,7 @@ class Cal_Year(wx.ScrolledWindow):
 	box.Fit(self)
 	w = box.GetSize().GetWidth()
 	h = box.GetSize().GetHeight()
-	Val.frame.SetSize( wx.Size(w+10,h+90) )
+	Val.frame.SetClientSize( wx.Size(w+10,h+90) )
 	self.SetScrollbars(20, 20, w/20, h/20)
 
     def Draw_Year(self):

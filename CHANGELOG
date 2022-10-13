@@ -25,6 +25,7 @@
 
     from Olly Betts <olly@survex.com> (as per https://bugs.debian.org/758955)
     - Update for wxPython 3.0
+    - Fix initial size of main window
 
 #====================================================
 #	Cycle - calendar for women
