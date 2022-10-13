@@ -8,6 +8,7 @@
 #======================================================================
 0.3.2 (unreleased)
     - removed outdated Readme.Debian
+    - converted README files to Markdown
 
 #====================================================
 #	Cycle - calendar for women
