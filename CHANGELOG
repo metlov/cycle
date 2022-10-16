@@ -8,6 +8,8 @@
 #======================================================================
 0.3.3 (unreleased)
     - fixed the Note dialog
+    - merged the actions of LMB and RMB on calendar to make it easier
+      to operate on it from touchscreen devices
 0.3.2 (13.10.2022)
     - removed outdated Readme.Debian
     - converted README files to Markdown

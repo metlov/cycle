@@ -63,15 +63,14 @@ class Month_Cal(wx.adv.GenericCalendarCtrl):
         self.d_click = wx.DateTime()  # FromDMY(1, 0,2002)
 
     def OnLeftDown(self, event):
+        self.OnRightDown(event)
+
+    def OnRightDown(self, event):
         # HitTest(Point pos) -> (result, date, weekday)
         res, d, w = self.HitTest(event.GetPosition())
         if res == wx.adv.CAL_HITTEST_DAY:
-            Val.frame.SetStatusText(info(d))
-
-    def OnRightDown(self, event):
-        res, d, w = self.HitTest(event.GetPosition())
-        if res == wx.adv.CAL_HITTEST_DAY:
             # now d contain clicked day
+            Val.frame.SetStatusText(info(d))
             self.d_click = d
             menu = wx.Menu()
             menu.Append(1, d.Format('%d %B'))
