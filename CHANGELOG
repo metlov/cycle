@@ -6,6 +6,7 @@
 # Other contributors are listed alongside their changes
 # Home page: https://github.com/metlov/cycle
 #======================================================================
+0.3.3 (unreleased)
 0.3.2 (13.10.2022)
     - removed outdated Readme.Debian
     - converted README files to Markdown

@@ -4,7 +4,7 @@
 
 # CYCLE - Ein Kalender für Frauen
 
-**13.10.2022 Version 0.3.2**  
+**DD.MM.YYYY Version 0.3.3**  
 2002-2005 (c) Oleg Gints (altgo@users.sourceforge.net)  
 2002-2005 (c) "CONERO lab", http://conero.lrn.ru  
 2022 (c) Konstantin L. Metlov (metlov@donfti.ru , metlov@fti.dn.ua)  
