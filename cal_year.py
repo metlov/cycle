@@ -11,7 +11,7 @@ import wx.adv
 import calendar
 import operator
 from functools import reduce
-
+import dialogs
 
 class Val:
     pass
@@ -119,7 +119,7 @@ class Month_Cal(wx.adv.GenericCalendarCtrl):
 
     def OnNote(self, event):
         txt = get_note(self.d_click)
-        dlg = Note_Dlg(self, self.d_click.Format('%d %B'), txt)
+        dlg = dialogs.Note_Dlg(self, self.d_click.Format('%d %B'), txt)
         ret = dlg.ShowModal()
         t = dlg.Get_Txt()
         dlg.Destroy()
