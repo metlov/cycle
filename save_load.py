@@ -22,6 +22,18 @@ try:
 except:
     import p_rotor as rotor
 
+# Unpickler with class renaming for compatibility with old saves
+import io
+class OldCycleUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        renamed_module = module
+        if module == "sip":
+            renamed_module = "wx.siplib"
+        return super(OldCycleUnpickler, self).find_class(renamed_module, name)
+
+def loadPickledCycles(s):
+    file = io.BytesIO(s)
+    return OldCycleUnpickler(file).load()
 
 def Save_Cycle(name='cycle', passwd='123', file='cycle'):
     """ Save the contents of our document to disk.
@@ -79,7 +91,7 @@ def Load_Cycle(name='cycle', passwd='123', file='cycle'):
             return False
         else:
             tmp = tmp[5:]  # remove control word 'Cycle'
-            objLoad = pickle.loads(tmp)
+            objLoad = loadPickledCycles(tmp)
             set_color_default()
             for type, d in objLoad:
                 #		print "Load: ", type, d

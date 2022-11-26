@@ -11,6 +11,7 @@
     - merged the actions of LMB and RMB on calendar to make it easier
       to operate on it from touchscreen devices
     - fixed some more integer divisions
+    - compatibility with old saves after "sip"->"wx.siplib" module rename
 0.3.2 (13.10.2022)
     - removed outdated Readme.Debian
     - converted README files to Markdown
