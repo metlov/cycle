@@ -205,7 +205,7 @@ class Cal_Year(wx.ScrolledWindow):
         w = box.GetSize().GetWidth()
         h = box.GetSize().GetHeight()
         Val.frame.SetClientSize(wx.Size(w+10, h+90))
-        self.SetScrollbars(20, 20, w/20, h/20)
+        self.SetScrollbars(20, 20, w//20, h//20)
 
     def Draw_Year(self):
         Val.frame.SetTitle(cycle.name+" - "+str(self.year))
@@ -376,7 +376,7 @@ def calc_fert(year):
         min, max = min_max(i)
         begin = d+wx.DateSpan.Days(min-18)  # begin fertile
         end = d+wx.DateSpan.Days(max-11)  # end fertile
-        ovul = end-wx.DateSpan.Days(((max-11)-(min-18))/2)  # day of ovul
+        ovul = end-wx.DateSpan.Days(((max-11)-(min-18))//2)  # day of ovul
         if year_b <= ovul <= year_e:
             add_mark(ovul, MARK_OVUL, year)
 
@@ -423,7 +423,7 @@ def calc_fert(year):
 
         begin = d+wx.DateSpan.Days(min-18)  # начало периода
         end = d+wx.DateSpan.Days(max-11)  # конец периода
-        ovul = end-wx.DateSpan.Days(((max-11)-(min-18))/2)  # day of ovul
+        ovul = end-wx.DateSpan.Days(((max-11)-(min-18))//2)  # day of ovul
         if year_b <= ovul <= year_e:
             add_mark(ovul, MARK_OVUL, year)
 
