@@ -7,7 +7,7 @@
 **DD.MM.YYYY Версия 0.3.3*  
 2002-2005 (c) Олег Гинц (altgo@users.sourceforge.net)  
 2002-2005 (c) "CONERO lab", http://conero.lrn.ru  
-2022 (c) Константин Л. Метлов (metlov@donfti.ru , metlov@fti.dn.ua)  
+2023 (c) Константин Л. Метлов (metlov@donfti.ru , metlov@fti.dn.ua)  
 
 ### Возможности программы:
 
